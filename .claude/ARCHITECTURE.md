@@ -15,7 +15,7 @@ Claude Code Starter is a **meta-framework** that extends Claude Code capabilitie
 - Standardizes project documentation
 
 ### 2. Dual Nature
-- **Templates** (`Init/`) — copied to user projects
+- **Migration system** (`migration/`) — templates and installer for user projects
 - **Code** (`src/`) — framework's own functionality
 
 ## Project Structure
@@ -35,13 +35,15 @@ claude-code-starter/
 ├── dist/                     # Compiled JavaScript
 │   └── claude-export/
 │
-├── Init/                     # User templates (Russian)
-│   ├── CLAUDE.md             # AI instructions template
-│   ├── SNAPSHOT.md           # Project state template
-│   ├── BACKLOG.md            # Tasks template
-│   ├── ARCHITECTURE.md       # Architecture template
-│   ├── SECURITY.md           # Security policy
-│   ├── .claude/commands/     # Slash commands (19)
+├── migration/                # Migration system
+│   ├── starter.zip           # Framework package (60KB)
+│   ├── init-project.sh       # Installation script
+│   ├── MIGRATION_GUIDE.md    # User installation guide
+│   ├── FRAMEWORK_GUIDE.template.md
+│   ├── templates/            # Templates for user projects
+│   │   ├── SNAPSHOT.template.md
+│   │   ├── BACKLOG.template.md
+│   │   └── ARCHITECTURE.template.md
 │   └── .claude-export/       # Pre-built utility (dist only)
 │
 ├── .claude/                  # Framework's own commands
@@ -94,7 +96,7 @@ Dialog export utility that converts Claude Code sessions to Markdown.
     [gitignore.ts]            # Add to .gitignore (private)
 ```
 
-## Templates (Init/)
+## Migration System (migration/)
 
 Templates installed to user projects via `init-project.sh`.
 
