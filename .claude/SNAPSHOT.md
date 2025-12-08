@@ -5,7 +5,7 @@
 ## Current State
 
 **Version:** 2.1.0
-**Status:** Complete project audit - documentation and code aligned
+**Status:** Installation system simplified - one-file self-extracting installer
 **Branch:** feat/framework-v2.0
 
 ## What's New in v2.0
