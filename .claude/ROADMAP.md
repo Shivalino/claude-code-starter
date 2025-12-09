@@ -24,9 +24,16 @@
 - ✅ Token economy redesign (16.6x smaller installer)
 
 **В работе:**
-- 🔄 Legacy project migration support
-- 🔄 Framework distribution system (init-project.sh + framework.tar.gz)
 - 🔄 GitHub Release v2.1.1
+
+**Завершается:**
+- ✅ Framework distribution system (init-project.sh + framework.tar.gz)
+- ✅ Legacy project migration support
+  - ✅ Three-scenario detection (new/legacy/upgrade)
+  - ✅ /migrate-legacy agent for projects without Framework
+  - ✅ /upgrade-framework agent for v1.x and v2.0 projects
+  - ✅ Token cost estimation and transparency
+  - ✅ Automated routing in installer
 
 ---
 
