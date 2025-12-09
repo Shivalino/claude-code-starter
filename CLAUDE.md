@@ -47,8 +47,9 @@ echo '{"status": "active", "timestamp": "'$(date -Iseconds)'"}' > .claude/.last_
 Read `.claude/SNAPSHOT.md` — current version, what's in progress
 
 ### Step 3: Context (on demand)
-- `.claude/BACKLOG.md` — tasks
-- `.claude/ARCHITECTURE.md` — code structure
+- `.claude/BACKLOG.md` — current sprint tasks (always read)
+- `.claude/ROADMAP.md` — strategic direction (v2.2+, always read to understand context)
+- `.claude/ARCHITECTURE.md` — code structure (read if working with code)
 
 ### Step 4: Confirm
 ```
