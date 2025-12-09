@@ -4,8 +4,8 @@
 
 ## Current State
 
-**Version:** 2.1.0
-**Status:** Documentation cleanup completed - README accurate and concise
+**Version:** 2.1.1
+**Status:** Critical bug fixes applied - watcher parasitic folders + sed escaping
 **Branch:** feat/framework-v2.0
 
 ## What's New in v2.0
@@ -83,6 +83,10 @@ claude-code-starter/
 - [x] **README.md restructure** — Installation integrated, "How It Works" added
 - [x] **Documentation cleanup** — removed outdated file references
 - [x] **dist-release/** — removed from git tracking
+- [x] **Bug #2 Fix (Parasitic folders)** — watcher.ts now uses project root cwd
+- [x] **sed escaping fix** — init-project.sh handles special chars in descriptions
+- [x] **Token economy fix** — init-project.sh architecture redesigned (88KB → 5.3KB, 16.6x smaller!)
+- [x] **Loader pattern** — init-project.sh now downloads framework.tar.gz separately from GitHub Releases
 
 ## Next Phase
 
