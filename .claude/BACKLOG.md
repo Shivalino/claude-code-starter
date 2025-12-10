@@ -1,169 +1,139 @@
 # BACKLOG — Claude Code Starter Framework
 
-*Последнее обновление: 2025-12-08*
+*Последнее обновление: 2025-12-09*
 
-> 📋 **SINGLE SOURCE OF TRUTH для задач фреймворка**
-
----
-
-## 🎯 Текущая фаза: v2.0.0 — Framework Restructuring
-
-**Цель:** Превратить фреймворк из набора документов в мета-слой над Claude Code с кодом
-
-**Статус:** ✅ Структура готова, проверяем протоколы
-
----
-
-## Phase 1: Framework Restructuring ✅
-
-### Выполнено:
-- [x] Добавить src/claude-export/ — исходный код
-- [x] Создать package.json — npm scripts
-- [x] Создать tsconfig.json — конфигурация TypeScript
-- [x] Создать ARCHITECTURE.md — документация кода
-- [x] Обновить CLAUDE.md — полные протоколы Cold Start и Completion
-- [x] Обновить SNAPSHOT.md — текущее состояние
-- [x] Удалить дистрибутивные файлы (init-starter.zip, init_eng/, Init/)
-- [x] Архивировать устаревшие файлы
-
-### Проверено:
-- [x] `npm run build` — компиляция работает
-- [x] `npm run dialog:list` — список сессий
-- [x] Slash commands (19) — все на месте
-- [x] `.claude/.last_session` — crash recovery работает
+> 📋 **SINGLE SOURCE OF TRUTH для текущих задач**
+>
+> Этот файл содержит только конкретные согласованные задачи, которые точно делаем.
+>
+> **Workflow:**
+> - 💡 Сырые идеи → [IDEAS.md](./IDEAS.md)
+> - 🗺️ Структурированные фичи (v2.2+) → [ROADMAP.md](./ROADMAP.md)
+> - 🎯 Конкретные задачи (сейчас) → **BACKLOG.md** (этот файл)
+> - ✅ Завершенное → Архив (внизу)
 
 ---
 
-## Phase 2: Protocol Verification ✅
+## 🎯 Текущие задачи (приоритизированные)
 
-### Cold Start Protocol:
-- [x] Step 0: Crash Recovery (check .last_session)
-- [x] Step 1: Mark Session Active
-- [x] Step 2: Load Context (SNAPSHOT.md)
-- [x] Step 3: Context on demand (BACKLOG.md, ARCHITECTURE.md)
-- [x] Step 4: Confirm
+### Phase 4: Distribution v2.1.1 ⏳
 
-### Completion Protocol (/fi):
-- [x] Step 1: npm run build
-- [x] Step 2: Update metafiles
-- [x] Step 3: npm run dialog:export
-- [x] Step 4: Git commit
-- [x] Step 5: Ask about push
-- [x] Step 6: Mark session clean
+**Статус:** В работе
+**Цель:** Финализировать v2.1.1 и создать релиз
 
-### Dialog Export UI:
-- [x] Teacher UI (localhost:3333) — управление видимостью
-- [x] Force Sync — синхронизация текущей сессии
-- [x] Student UI (html-viewer/index.html) — статический просмотр
+**Задачи:**
+- [ ] Тестирование init-project.sh на legacy проектах
+  - [ ] chatRAG (уже протестировано, найдены баги)
+  - [ ] Другие проекты с Framework v1.x
+- [ ] Создать GitHub Release v2.1.1
+  - [ ] Загрузить init-project.sh (5.3KB)
+  - [ ] Загрузить framework.tar.gz (56KB)
+  - [ ] Написать Release Notes
+- [x] Обновить README.md с инструкциями по установке
+  - [x] Упрощенная секция установки (6 шагов)
+  - [x] Уточнение про qualifying questions (legacy vs новый)
+  - [x] Упрощенный roadmap (только ссылка)
+  - [x] Единая процедура для всех сценариев
+- [x] Реализовать автоматическую установку для нового проекта
+  - [x] init-project.sh создает migration-context.json для всех режимов
+  - [x] CLAUDE.md обрабатывает "mode": "new"
+  - [x] Единое сообщение "Миграция завершена!"
+- [x] Упростить qualifying questions
+  - [x] Добавить явную опцию "Сделай, как лучше"
+  - [x] Упростить migration summary (краткая сводка вместо больших таблиц)
+- [ ] Объявить релиз пользователям
 
-### Fixes Applied:
-- [x] Template replacement order (Student UI) — DIALOGS_DATA last
-- [x] Path encoding variations (findClaudeProjectDir) — underscore/dash support
-- [x] Force Sync, Watcher, CLI Export — автоматически исправлены
-- [x] **Dialog export sync bug** — runExport не вызывал syncCurrentSession (2025-12-07)
-
-### Testing Completed:
-- [x] Manual summaries — 6 dialogs (SUMMARY_SHORT/FULL)
-- [x] CLI commands — list, export, init, watch
-- [x] Privacy management — .gitignore → Student UI sync
-- [x] Recovery — directory deletion incident resolved
-- [x] Export sync fix — текущий диалог обновляется при завершении спринта
-- [x] Summary parsing — simplified, marker-based (PENDING/ACTIVE)
-- [x] UI auto-refresh — 10-second data polling
-- [x] Documentation — README.md + README_RU.md updated for v2.0
-- [x] File organization — AI metafiles moved to .claude/
+**GitHub Issues:**
+- Связанные: #4 (init-project.sh не копирует .claude/commands/)
 
 ---
 
-## Phase 3: Installation System ✅
+## 📚 Архив (завершённые фазы)
 
-**Статус:** Завершена 2025-12-08 — Self-extracting installer ready
-
-### Задачи:
-- [x] Создать migration/templates/ для v2.1
-- [x] init-project.sh — self-extracting installer (88KB)
-- [x] build-distribution.sh — создание финального installer
-- [x] MIGRATION_GUIDE.md → README.md (упрощена установка)
-- [x] Тестирование на реальных проектах (ChatOpenAII_3)
-- [x] README cleanup — удалены устаревшие ссылки на файлы
-- [x] Добавлен раздел "How It Works" — объяснение протоколов
-- [x] dist-release/ удалена из git (artifacts в .gitignore)
-
----
-
-## Phase 3.5: Bug Fixes v2.1.1 ✅
-
-**Статус:** Завершена 2025-12-08 — Critical bugs from chatRAG testing fixed
-
-### Задачи:
-- [x] Fix Bug #2 (Parasitic folders) — watcher.ts:107 cwd fix
-- [x] Fix sed escaping bug — init-project.sh sed_escape() function
-- [x] Update version to 2.1.1 in init-project.sh
-- [x] Rebuild TypeScript (npm run build)
-- [x] Update SNAPSHOT.md with bug fixes
-- [x] **CRITICAL: Token economy** — Remove init-project.sh (88KB) from git
+<details>
+<summary>Phase 3.5: Bug Fixes v2.1.1 ✅ (2025-12-08)</summary>
 
 ### Исправленные баги:
-1. **watcher.ts parasitic folders** — Changed `cwd: path.dirname(dialogPath)` to `cwd: path.dirname(path.dirname(dialogPath))` to prevent creation of `project-name-dialog` folders in ~/.claude/projects/
-2. **init-project.sh sed escaping** — Added `sed_escape()` function to handle special characters (&, /, \) in PROJECT_DESCRIPTION, preventing installer crashes
-3. **Token economy disaster → FIXED with architecture redesign** —
-   - **Problem:** init-project.sh was 88KB (546 lines) with embedded base64 archive, stored in git
-   - **Impact:** Risk of wasting 88KB tokens if read during Cold Start/grep/search
-   - **Solution:** Completely redesigned architecture:
-     - init-project.sh → 5.3KB (161 lines) simple loader script
-     - framework.tar.gz → 56KB separate archive file
-     - Loader downloads archive from GitHub Releases on demand
-     - **Result:** 16.6x smaller! (88KB → 5.3KB)
+1. **watcher.ts parasitic folders** — Fixed cwd to prevent `project-name-dialog` folders
+2. **sed escaping** — Added `sed_escape()` function for special characters
+3. **Token economy** — Redesigned to loader pattern (88KB → 5.3KB, 16.6x!)
+4. **Legacy metafile preservation** — Don't overwrite existing SNAPSHOT/BACKLOG/ARCHITECTURE
+
+**Source:** BUG_REPORT_FRAMEWORK.md from chatRAG production testing
+
+</details>
+
+<details>
+<summary>Phase 3: Installation System ✅ (2025-12-08)</summary>
+
+- [x] migration/templates/ structure
+- [x] init-project.sh loader (5.3KB)
+- [x] build-distribution.sh
+- [x] README cleanup
+- [x] dist-release/ gitignored
+
+</details>
+
+<details>
+<summary>Phase 2: Protocol Verification ✅</summary>
+
+- [x] Cold Start Protocol implemented
+- [x] Completion Protocol (/fi) implemented
+- [x] Dialog Export UI (Teacher + Student)
+- [x] Crash Recovery tested
+
+</details>
+
+<details>
+<summary>Phase 1: Framework Restructuring ✅ (v2.0.0)</summary>
+
+- [x] src/claude-export/ TypeScript source
+- [x] dist/claude-export/ compiled
+- [x] npm project structure
+- [x] Full protocols in CLAUDE.md
+
+</details>
+
+<details>
+<summary>v1.4.3 — Sprint Completion ✅ (2025-10-23)</summary>
+
+- 5-layer reminder system
+- Sprint Completion Protocol
+- Dogfooding (framework uses itself)
+
+</details>
+
+<details>
+<summary>v1.4.0 — Cold Start ✅ (2025-10-11)</summary>
+
+- PROJECT_SNAPSHOT.md template
+- 85% token economy improvement
+
+</details>
 
 ---
 
-## Phase 4: Distribution ⏳
-
-### Задачи:
-- [ ] init-starter.zip (русская версия)
-- [ ] init-starter-en.zip (английская версия)
-- [ ] README.md / README_RU.md
-- [ ] GitHub Release
-
----
-
-## 📊 Структура v2.0.0
+## 📊 Структура текущей версии (v2.1.1)
 
 ```
 claude-code-starter/
-├── src/claude-export/     ✅ Исходный код
-├── dist/claude-export/    ✅ Скомпилировано
+├── src/claude-export/     # TypeScript source
+├── dist/claude-export/    # Compiled JS
 ├── .claude/
-│   ├── commands/          ✅ 19 slash commands
-│   ├── SNAPSHOT.md        ✅ Состояние проекта
-│   ├── ARCHITECTURE.md    ✅ Документация кода
-│   └── BACKLOG.md         ✅ Этот файл
-├── dialog/                ✅ Экспорт диалогов
-│
-├── package.json           ✅ npm scripts
-├── tsconfig.json          ✅ TypeScript config
-├── CLAUDE.md              ✅ Протоколы AI
-├── CHANGELOG.md           ⏳ Обновить при релизе
+│   ├── commands/          # 19 slash commands
+│   ├── SNAPSHOT.md        # Current state
+│   ├── ARCHITECTURE.md    # Code structure
+│   └── BACKLOG.md         # THIS FILE
+├── migration/
+│   ├── init-project.sh    # Installer template (5.3KB)
+│   ├── build-distribution.sh
+│   └── templates/         # Meta file templates
+├── dialog/                # Dialog exports
+├── package.json           # npm scripts
+├── CLAUDE.md              # AI protocols
+├── CHANGELOG.md           # Version history
 └── README.md / README_RU.md
 ```
-
----
-
-## ✅ История версий
-
-### v2.0.0 (2025-12-07) — Framework Restructuring
-- Добавлен код (src/, dist/)
-- npm project structure
-- Полные протоколы Cold Start и Completion
-- Crash Recovery
-
-### v1.4.3 (2025-10-23) — Sprint Completion
-- 5-уровневая система напоминаний
-- Dogfooding (фреймворк использует себя)
-
-### v1.4.0 (2025-10-11) — Cold Start
-- PROJECT_SNAPSHOT.md template
-- 85% экономия токенов
 
 ---
 
@@ -173,7 +143,23 @@ claude-code-starter/
 - [ARCHITECTURE.md](./.claude/ARCHITECTURE.md) — структура кода
 - [CLAUDE.md](../CLAUDE.md) — протоколы AI
 - [CHANGELOG.md](../CHANGELOG.md) — полная история
+- [GitHub Issues](https://github.com/alexeykrol/claude-code-starter/issues) — детальные обсуждения
 
 ---
 
-*Обновляй после каждой завершенной задачи!*
+## 📝 Процесс работы с BACKLOG
+
+### Для разработчика:
+1. **Начало работы:** Проверить "Текущие задачи"
+2. **Новая идея:** Добавить в "Идеи и пожелания"
+3. **Приоритизация:** Переместить из идей в задачи когда готовы
+4. **Завершение:** Переместить в архив, обновить CHANGELOG
+
+### Для AI:
+1. **Cold Start:** Читать "Текущие задачи" для контекста
+2. **Planning:** Превращать идеи в конкретные задачи по запросу
+3. **Completion:** Обновлять статусы, переносить в архив
+
+---
+
+*Обновляй после каждой завершенной задачи или новой идеи!*
