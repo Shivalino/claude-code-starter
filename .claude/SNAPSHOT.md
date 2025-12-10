@@ -1,11 +1,11 @@
 # SNAPSHOT — Claude Code Starter Framework
 
-*Last updated: 2025-12-08*
+*Last updated: 2025-12-09*
 
 ## Current State
 
 **Version:** 2.1.1
-**Status:** Critical bug fixes applied - watcher parasitic folders + sed escaping
+**Status:** Installation UX improvements - unified workflow for all scenarios
 **Branch:** feat/framework-v2.0
 
 ## What's New in v2.0
@@ -87,6 +87,11 @@ claude-code-starter/
 - [x] **sed escaping fix** — init-project.sh handles special chars in descriptions
 - [x] **Token economy fix** — init-project.sh architecture redesigned (88KB → 5.3KB, 16.6x smaller!)
 - [x] **Loader pattern** — init-project.sh now downloads framework.tar.gz separately from GitHub Releases
+- [x] **Installation UX** — unified workflow for all scenarios (new/legacy/upgrade)
+- [x] **New project setup** — CLAUDE.md handles "mode": "new" with welcome message
+- [x] **Qualifying questions** — added explicit "Сделай, как лучше" option
+- [x] **Migration summary** — simplified to concise message instead of large tables
+- [x] **README updates** — simplified installation instructions for beginners
 
 ## Next Phase
 

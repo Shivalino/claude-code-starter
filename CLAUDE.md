@@ -27,8 +27,9 @@ If file exists, this is first launch after installation.
 **Read context and route:**
 - If `"mode": "legacy"` → Execute Legacy Migration workflow (see below)
 - If `"mode": "upgrade"` → Execute Framework Upgrade workflow (see below)
+- If `"mode": "new"` → Execute New Project Setup workflow (see below)
 
-After completing migration, delete marker:
+After completing workflow, delete marker:
 ```bash
 rm .claude/migration-context.json
 ```
@@ -250,6 +251,48 @@ npm run dialog:list     # List sessions
 
 4. **Next session:**
    - Use normal Cold Start Protocol with new structure
+
+---
+
+## New Project Setup Protocol
+
+**Triggered when:** `.claude/migration-context.json` exists with `"mode": "new"`
+
+**Purpose:** Verify Framework installation and welcome user.
+
+**Workflow:**
+
+1. **Show welcome message:**
+   ```
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ Установка завершена!
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   📁 Framework Files Created:
+
+     ✅ .claude/SNAPSHOT.md
+     ✅ .claude/BACKLOG.md
+     ✅ .claude/ROADMAP.md
+     ✅ .claude/ARCHITECTURE.md
+     ✅ .claude/IDEAS.md
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   🚀 Next Step:
+
+     Введите команду "start" или "начать", чтобы фреймворк запустился.
+     (Type "start" or "начать" to launch the framework)
+
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ```
+
+2. **Delete migration marker:**
+   ```bash
+   rm .claude/migration-context.json
+   ```
+
+3. **Next session:**
+   - Use normal Cold Start Protocol
 
 ---
 *Framework: Claude Code Starter v2.1.1 | Updated: 2025-12-09*
