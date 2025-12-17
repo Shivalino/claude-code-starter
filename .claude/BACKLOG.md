@@ -28,6 +28,9 @@
   - [x] Обновить CLAUDE.md Step 6.5 — два этапа подтверждения (create → submit)
   - [x] Обновить build-distribution.sh для копирования submit script
   - [x] Тестирование: syntax check, gh CLI availability
+  - [x] Fix: CLAUDE.md Step 6.5 — bug reports ALWAYS создаются (не только при ошибках)
+  - [x] Fix: Auto-create "bug-report" label if missing
+  - [x] Fix: Smart title generation `[Bug Report][Protocol Type] vX.Y.Z - Status`
 - [x] **Phase 3: Analytics & Pattern Detection**
   - [x] Создать analyze-bug-patterns.sh (bash 3.2 compatible)
   - [x] Реализовать анализ: версии, протоколы, ошибки, шаги
@@ -35,10 +38,16 @@
   - [x] Создать /analyze-local-bugs command
   - [x] Обновить build-distribution.sh для копирования analyze script
   - [x] Тестирование: работает с пустыми и заполненными логами
+- [x] **Quick Update Utility**
+  - [x] Создать quick-update.sh для быстрого обновления фреймворка
+  - [x] Smart detection — auto-download init-project.sh если framework отсутствует
+  - [x] Добавить в distribution (build-distribution.sh)
 
 **Результат:**
 - Полная 3-фазная система bug reporting (Local → Centralized → Analytics)
+- Bug reports как analytics/telemetry (не только ошибки)
 - Автоматическое обнаружение паттернов и рекомендации
+- Smart quick-update.sh — предотвращает путаницу между update и install
 - Privacy-first с двойным подтверждением
 - Совместимость с bash 3.2+ (macOS)
 

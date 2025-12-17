@@ -157,6 +157,8 @@ claude-code-starter/
 - [x] CLAUDE.md Step 6.5 enhanced - Two-step confirmation (create → submit)
 - [x] GitHub CLI integration with graceful fallback
 - [x] Issue URL tracking in report metadata
+- [x] Auto-create "bug-report" label if missing
+- [x] Smart title generation: `[Bug Report][Protocol Type] vX.Y.Z - Status`
 
 **Phase 3: Analytics & Pattern Detection**
 - [x] `.claude/scripts/analyze-bug-patterns.sh` - Pattern analyzer (bash 3.2 compatible)
@@ -167,6 +169,11 @@ claude-code-starter/
 - [x] Step failure analysis with recommendations
 - [x] Auto-generated summary reports
 
+**Quick Update Utility:**
+- [x] `quick-update.sh` - Standalone updater for existing framework installations
+- [x] Smart detection - auto-downloads init-project.sh if framework not found
+- [x] Prevents user confusion between update vs installation
+
 **System Architecture:**
 ```
 Phase 1: Local Logging → Phase 2: Centralized Collection → Phase 3: Analytics
@@ -174,6 +181,7 @@ Phase 1: Local Logging → Phase 2: Centralized Collection → Phase 3: Analytic
 ```
 
 **Privacy & Control:**
+- Bug reports created ALWAYS (analytics/telemetry, not just errors)
 - Double confirmation (create report + submit to GitHub)
 - All analysis runs locally first
 - User decides what to share
