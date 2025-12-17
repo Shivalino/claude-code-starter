@@ -67,6 +67,8 @@ fi
 
 If cleanup performed, continue to Step 0.1 (Crash Recovery).
 
+If no cleanup needed, continue to Step 0.1 (Crash Recovery).
+
 ---
 
 ### Step 0.1: Crash Recovery & Auto-Recovery
@@ -91,7 +93,58 @@ cat .claude/.last_session
     # Ask: "Continue or commit first?"
   fi
   ```
-- If `"status": "clean"` → OK, continue to Step 0.5
+- If `"status": "clean"` → OK, continue to Step 0.2
+
+### Step 0.2: Framework Version Check
+
+**Purpose:** Automatically update framework to latest version if available.
+
+```bash
+# 1. Parse local version from CLAUDE.md
+LOCAL_VERSION=$(grep "Framework: Claude Code Starter v" CLAUDE.md | tail -1 | sed 's/.*v\([0-9.]*\).*/\1/')
+
+# 2. Get latest version from GitHub
+LATEST_VERSION=$(curl -s https://api.github.com/repos/alexeykrol/claude-code-starter/releases/latest | grep '"tag_name"' | sed 's/.*"v\(.*\)".*/\1/')
+
+# 3. If newer version available - auto-update (aggressive)
+if [ "$LOCAL_VERSION" != "$LATEST_VERSION" ] && [ "$LATEST_VERSION" != "" ]; then
+  echo "📦 Framework update available: v$LOCAL_VERSION → v$LATEST_VERSION"
+  echo "Updating framework..."
+
+  # Download CLAUDE.md
+  curl -sL "https://github.com/alexeykrol/claude-code-starter/releases/download/v$LATEST_VERSION/CLAUDE.md" -o CLAUDE.md.new
+
+  # Download framework commands (5 files)
+  curl -sL "https://github.com/alexeykrol/claude-code-starter/releases/download/v$LATEST_VERSION/framework-commands.tar.gz" -o /tmp/fw-cmd.tar.gz
+
+  # Verify downloads successful
+  if [ -f "CLAUDE.md.new" ] && [ -f "/tmp/fw-cmd.tar.gz" ]; then
+    # Replace CLAUDE.md
+    mv CLAUDE.md.new CLAUDE.md
+
+    # Extract commands
+    tar -xzf /tmp/fw-cmd.tar.gz -C .claude/commands/
+    rm /tmp/fw-cmd.tar.gz
+
+    echo "✅ Framework updated to v$LATEST_VERSION"
+    echo ""
+    echo "⚠️  IMPORTANT: Restart this session to use new framework version"
+    echo "   Type 'exit' and start new session with 'claude'"
+    echo ""
+  else
+    echo "⚠️  Update failed - continuing with v$LOCAL_VERSION"
+    rm -f CLAUDE.md.new /tmp/fw-cmd.tar.gz
+  fi
+fi
+```
+
+**Notes:**
+- Updates only framework files (CLAUDE.md + 5 commands)
+- Does NOT touch user files (SNAPSHOT.md, BACKLOG.md, etc.)
+- Safe to run - preserves all project data
+- Requires session restart to use new version
+
+---
 
 ### Step 0.5: Export Closed Sessions & Update Student UI
 ```bash

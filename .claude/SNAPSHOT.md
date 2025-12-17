@@ -4,8 +4,8 @@
 
 ## Current State
 
-**Version:** 2.2.3
-**Status:** Production - All critical bugs fixed, source files synchronized
+**Version:** 2.2.4-dev
+**Status:** Development - Adding framework auto-update feature
 **Branch:** main
 
 ## What's New in v2.0
@@ -117,10 +117,28 @@ claude-code-starter/
 - GitHub Release v2.2.3 updated (CORRECTED)
 - santacruz host project updated and verified
 
+## Current Work (v2.2.4)
+
+**Auto-Update Framework Feature:**
+- [x] Add Step 0.2 (Framework Version Check) to Cold Start Protocol
+- [x] Update build-distribution.sh to create framework-commands.tar.gz
+- [x] Update /release command to upload framework-commands.tar.gz
+- [x] Test version parsing logic (GitHub API + local CLAUDE.md)
+- [x] Update SNAPSHOT.md and BACKLOG.md
+- [ ] Test auto-update on host project (santacruz)
+- [ ] Create GitHub Release v2.2.4
+- [ ] Update CHANGELOG.md with auto-update feature
+
+**What's New:**
+- Framework now auto-updates on Cold Start (Step 0.2)
+- Downloads only changed files (CLAUDE.md + 5 commands)
+- Aggressive update strategy (no user confirmation needed)
+- Safe - preserves all project data
+
 ## Next Phase
 
-- [ ] Monitor for additional production issues
-- [ ] Announce v2.2.3 release to users
+- [ ] Monitor auto-update in production
+- [ ] Announce v2.2.4 release to users
 
 ## npm Commands
 
