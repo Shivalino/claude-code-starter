@@ -174,6 +174,21 @@ claude-code-starter/
 - [x] Smart detection - auto-downloads init-project.sh if framework not found
 - [x] Prevents user confusion between update vs installation
 
+**Framework Developer Mode (Cold Start Protocol):**
+- [x] Step 0.4: Automatic bug report checking from GitHub Issues
+- [x] Shows count of open reports and recent ones (last 7 days)
+- [x] Lists 5 most recent bug reports with titles
+- [x] Suggests running `/analyze-bugs` for detailed analysis
+- [x] Only runs in framework project (claude-code-starter)
+- [x] Non-blocking: gracefully handles missing gh CLI
+
+**Completion Protocol Self-Check:**
+- [x] Step 0: Re-read Completion Protocol before execution
+- [x] Prevents "сапожник без сапог" problem (forgetting to document changes)
+- [x] Self-check questions for metafile updates
+- [x] Works for both framework and host projects
+- [x] Counters context compaction during long sessions
+
 **System Architecture:**
 ```
 Phase 1: Local Logging → Phase 2: Centralized Collection → Phase 3: Analytics
