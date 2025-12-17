@@ -146,6 +146,150 @@ fi
 
 ---
 
+### Step 0.15: Bug Reporting Consent (First Run Only)
+
+**Purpose:** Ask user for consent to collect anonymous bug reports on first framework run.
+
+```bash
+# Check if first run or consent not yet given
+if [ ! -f ".claude/.framework-config" ]; then
+  # Initialize config file
+  PROJECT_NAME=$(basename "$(pwd)")
+  cat > .claude/.framework-config <<EOF
+{
+  "bug_reporting_enabled": false,
+  "project_name": "$PROJECT_NAME",
+  "first_run_completed": false,
+  "consent_version": "1.0"
+}
+EOF
+fi
+
+# Read config
+FIRST_RUN=$(cat .claude/.framework-config | grep -o '"first_run_completed": *[^,}]*' | sed 's/.*: *//' | tr -d ' ')
+
+if [ "$FIRST_RUN" = "false" ]; then
+  echo ""
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "🔒 Framework Bug Reporting"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo ""
+  echo "The framework can collect anonymous bug reports to help improve it."
+  echo ""
+  echo "What gets sent (if errors occur):"
+  echo "  • Error messages and stack traces (anonymized)"
+  echo "  • Framework version and protocol step"
+  echo "  • Timestamp"
+  echo ""
+  echo "What does NOT get sent:"
+  echo "  • Your code or file contents"
+  echo "  • File paths (anonymized)"
+  echo "  • API keys, tokens, secrets (removed)"
+  echo "  • Project name (anonymized)"
+  echo ""
+  echo "Reports are sent to: github.com/alexeykrol/claude-code-starter/issues"
+  echo ""
+  echo "You can change this anytime with: /bug-reporting enable|disable"
+  echo ""
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo ""
+
+  # Ask for consent
+  read -p "Enable anonymous bug reporting? (y/N) " -n 1 -r
+  echo ""
+
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    # Enable bug reporting
+    cat .claude/.framework-config | sed 's/"bug_reporting_enabled": false/"bug_reporting_enabled": true/' | sed 's/"first_run_completed": false/"first_run_completed": true/' > .claude/.framework-config.tmp
+    mv .claude/.framework-config.tmp .claude/.framework-config
+    echo "✅ Bug reporting enabled. Thank you for helping improve the framework!"
+  else
+    # Mark first run complete but keep disabled
+    cat .claude/.framework-config | sed 's/"first_run_completed": false/"first_run_completed": true/' > .claude/.framework-config.tmp
+    mv .claude/.framework-config.tmp .claude/.framework-config
+    echo "ℹ️  Bug reporting disabled. You can enable it later with: /bug-reporting enable"
+  fi
+  echo ""
+fi
+```
+
+**Notes:**
+- Only runs once on first framework launch
+- Stores preference in `.claude/.framework-config`
+- Can be changed anytime with `/bug-reporting` command
+- Fully opt-in, default is disabled
+
+---
+
+### Step 0.3: Initialize Protocol Logging
+
+**Purpose:** Set up logging for Cold Start protocol execution (if enabled).
+
+```bash
+# Check if bug reporting enabled
+if [ -f ".claude/.framework-config" ]; then
+  BUG_REPORTING=$(cat .claude/.framework-config | grep -o '"bug_reporting_enabled": *[^,}]*' | sed 's/.*: *//' | tr -d ' ')
+
+  if [ "$BUG_REPORTING" = "true" ]; then
+    # Create log directory
+    mkdir -p .claude/logs/cold-start
+
+    # Generate log filename with timestamp
+    PROJECT_NAME=$(basename "$(pwd)")
+    TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+    LOG_FILE=".claude/logs/cold-start/${PROJECT_NAME}-${TIMESTAMP}.md"
+
+    # Initialize log file
+    cat > "$LOG_FILE" <<EOF
+# Cold Start Protocol Log
+
+**Project:** ${PROJECT_NAME}_anon
+**Started:** $(date -Iseconds)
+**Framework:** $(grep "Framework: Claude Code Starter v" CLAUDE.md | tail -1 | sed 's/.*v/v/')
+
+## Protocol Execution
+
+EOF
+
+    # Export log file path for use in subsequent steps
+    export COLD_START_LOG="$LOG_FILE"
+
+    # Log function
+    log_step() {
+      if [ -n "$COLD_START_LOG" ]; then
+        echo "- [$(date +%H:%M:%S)] $1" >> "$COLD_START_LOG"
+      fi
+    }
+
+    # Log error function
+    log_error() {
+      if [ -n "$COLD_START_LOG" ]; then
+        echo "" >> "$COLD_START_LOG"
+        echo "## ⚠️ ERROR at $(date +%H:%M:%S)" >> "$COLD_START_LOG"
+        echo "" >> "$COLD_START_LOG"
+        echo '```' >> "$COLD_START_LOG"
+        echo "$1" >> "$COLD_START_LOG"
+        echo '```' >> "$COLD_START_LOG"
+        echo "" >> "$COLD_START_LOG"
+      fi
+    }
+
+    export -f log_step log_error
+
+    log_step "Step 0.3: Logging initialized"
+  fi
+fi
+```
+
+**Notes:**
+- Only creates logs if bug reporting is enabled
+- Log files named: `{project}-{timestamp}.md`
+- Stored in `.claude/logs/cold-start/` (gitignored)
+- Includes project name (anonymized), timestamp, framework version
+- Provides `log_step()` and `log_error()` functions for protocol steps
+
+---
+
 ### Step 0.5: Export Closed Sessions & Update Student UI
 ```bash
 npm run dialog:export --no-html
@@ -186,6 +330,73 @@ Ready to work!
 ---
 
 ## Completion Protocol
+
+### 0. Initialize Completion Logging
+
+**Purpose:** Set up logging for Completion protocol execution (if enabled).
+
+```bash
+# Check if bug reporting enabled
+if [ -f ".claude/.framework-config" ]; then
+  BUG_REPORTING=$(cat .claude/.framework-config | grep -o '"bug_reporting_enabled": *[^,}]*' | sed 's/.*: *//' | tr -d ' ')
+
+  if [ "$BUG_REPORTING" = "true" ]; then
+    # Create log directory
+    mkdir -p .claude/logs/completion
+
+    # Generate log filename with timestamp
+    PROJECT_NAME=$(basename "$(pwd)")
+    TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+    LOG_FILE=".claude/logs/completion/${PROJECT_NAME}-${TIMESTAMP}.md"
+
+    # Initialize log file
+    cat > "$LOG_FILE" <<EOF
+# Completion Protocol Log
+
+**Project:** ${PROJECT_NAME}_anon
+**Started:** $(date -Iseconds)
+**Framework:** $(grep "Framework: Claude Code Starter v" CLAUDE.md | tail -1 | sed 's/.*v/v/')
+
+## Protocol Execution
+
+EOF
+
+    # Export log file path for use in subsequent steps
+    export COMPLETION_LOG="$LOG_FILE"
+
+    # Log function
+    log_completion_step() {
+      if [ -n "$COMPLETION_LOG" ]; then
+        echo "- [$(date +%H:%M:%S)] $1" >> "$COMPLETION_LOG"
+      fi
+    }
+
+    # Log error function
+    log_completion_error() {
+      if [ -n "$COMPLETION_LOG" ]; then
+        echo "" >> "$COMPLETION_LOG"
+        echo "## ⚠️ ERROR at $(date +%H:%M:%S)" >> "$COMPLETION_LOG"
+        echo "" >> "$COMPLETION_LOG"
+        echo '```' >> "$COMPLETION_LOG"
+        echo "$1" >> "$COMPLETION_LOG"
+        echo '```' >> "$COMPLETION_LOG"
+        echo "" >> "$COMPLETION_LOG"
+      fi
+    }
+
+    export -f log_completion_step log_completion_error
+
+    log_completion_step "Step 0: Logging initialized"
+  fi
+fi
+```
+
+**Notes:**
+- Only creates logs if bug reporting is enabled
+- Log files named: `{project}-{timestamp}.md`
+- Stored in `.claude/logs/completion/` (gitignored)
+
+---
 
 ### 1. Build (if code changed)
 ```bash
@@ -257,6 +468,59 @@ git log origin/main..HEAD --oneline
 echo '{"status": "clean", "timestamp": "'$(date -Iseconds)'"}' > .claude/.last_session
 ```
 
+### 6.5 Finalize Completion Log & Create Bug Report
+
+**Purpose:** Complete the log, check for errors, and create bug report if needed.
+
+```bash
+# Finalize log if enabled
+if [ -n "$COMPLETION_LOG" ] && [ -f "$COMPLETION_LOG" ]; then
+  log_completion_step "Step 6: Session marked clean"
+
+  # Add completion timestamp
+  cat >> "$COMPLETION_LOG" <<EOF
+
+## Completion
+
+**Finished:** $(date -Iseconds)
+**Status:** Success
+EOF
+
+  echo "✅ Completion log saved: $COMPLETION_LOG"
+
+  # Check if there were any errors in the log
+  if grep -q "## ⚠️ ERROR" "$COMPLETION_LOG"; then
+    echo ""
+    echo "⚠️  Errors detected during completion protocol"
+    echo "Log contains error information: $COMPLETION_LOG"
+    echo ""
+
+    # Offer to create bug report
+    read -p "Create anonymized bug report? (y/N) " -n 1 -r
+    echo ""
+
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      # Run anonymization script
+      if [ -f ".claude/scripts/anonymize-report.sh" ]; then
+        REPORT_FILE=$(bash .claude/scripts/anonymize-report.sh "$COMPLETION_LOG")
+        echo "✅ Bug report created: $REPORT_FILE"
+        echo ""
+        echo "You can submit this to: github.com/alexeykrol/claude-code-starter/issues"
+      else
+        echo "⚠️  Anonymization script not found"
+        echo "Manual review needed before sharing: $COMPLETION_LOG"
+      fi
+    fi
+  fi
+fi
+```
+
+**Notes:**
+- Finalizes log with completion timestamp
+- Checks for errors in log
+- Offers to create anonymized bug report if errors found
+- Uses anonymization script to remove sensitive data
+
 ---
 
 ## Repository Structure
@@ -312,6 +576,54 @@ npm run dialog:list     # List sessions
 - DO NOT forget `npm run build` after code changes
 - DO NOT commit without updating metafiles
 - ALWAYS mark session clean at completion
+
+---
+
+## Framework Developer Mode
+
+**This section is ONLY for the framework development project (claude-code-starter repo).**
+
+### Step 0.4: Read Bug Reports from Host Projects
+
+**When to run:** During Cold Start on framework project, after Step 0.3 (Protocol Logging).
+
+**Purpose:** Fetch and analyze bug reports submitted by host projects.
+
+```bash
+# Check if this is the framework project
+if [ -d "migration" ] && [ -f "migration/build-distribution.sh" ]; then
+  echo ""
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "📊 Framework Developer Mode Active"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo ""
+
+  # Check for new bug reports on GitHub
+  # Note: Use /analyze-bugs command for detailed analysis
+  ISSUE_COUNT=$(gh issue list --label "bug-report" --json number --jq length 2>/dev/null || echo "0")
+
+  if [ "$ISSUE_COUNT" -gt "0" ]; then
+    echo "⚠️  $ISSUE_COUNT bug report(s) available from host projects"
+    echo ""
+    echo "To analyze:"
+    echo "  • Run: /analyze-bugs"
+    echo "  • Or view: gh issue list --label bug-report"
+    echo ""
+  else
+    echo "✅ No new bug reports"
+    echo ""
+  fi
+
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo ""
+fi
+```
+
+**Notes:**
+- Only activates on framework project (checks for `migration/build-distribution.sh`)
+- Shows count of open bug reports with `bug-report` label
+- Directs to `/analyze-bugs` command for detailed analysis
+- Does NOT activate on host projects
 
 ---
 
@@ -417,4 +729,4 @@ npm run dialog:list     # List sessions
    - Use normal Cold Start Protocol
 
 ---
-*Framework: Claude Code Starter v2.2.4 | Updated: 2025-12-16*
+*Framework: Claude Code Starter v2.3.0 | Updated: 2025-12-16*

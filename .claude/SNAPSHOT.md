@@ -4,8 +4,8 @@
 
 ## Current State
 
-**Version:** 2.2.4
-**Status:** Production - Framework auto-update feature released
+**Version:** 2.3.0
+**Status:** Production - Bug reporting & logging system released
 **Branch:** main
 
 ## What's New in v2.0
@@ -117,28 +117,41 @@ claude-code-starter/
 - GitHub Release v2.2.3 updated (CORRECTED)
 - santacruz host project updated and verified
 
-## Current Work (v2.2.4)
+## What's New in v2.3.0
 
-**Auto-Update Framework Feature:**
-- [x] Add Step 0.2 (Framework Version Check) to Cold Start Protocol
-- [x] Update build-distribution.sh to create framework-commands.tar.gz
-- [x] Update /release command to upload framework-commands.tar.gz
-- [x] Test version parsing logic (GitHub API + local CLAUDE.md)
-- [x] Update SNAPSHOT.md and BACKLOG.md
-- [ ] Test auto-update on host project (santacruz)
-- [ ] Create GitHub Release v2.2.4
-- [ ] Update CHANGELOG.md with auto-update feature
+**Bug Reporting & Logging System (Phase 6):**
+- [x] Step 0.15: Bug Reporting Consent - First-run opt-in dialog
+- [x] Step 0.3: Cold Start Protocol Logging with timestamps
+- [x] Completion Protocol Logging (Step 0 & Step 6.5)
+- [x] /bug-reporting command - manage settings (enable/disable/status/test)
+- [x] Anonymization script - removes paths, keys, emails, IPs
+- [x] Framework Developer Mode (Step 0.4) - reads bug reports from GitHub Issues
+- [x] /analyze-bugs command - group and prioritize bug reports
+- [x] .framework-config - privacy preferences storage
+- [x] Tested on santacruz - all features working
 
-**What's New:**
-- Framework now auto-updates on Cold Start (Step 0.2)
-- Downloads only changed files (CLAUDE.md + 5 commands)
-- Aggressive update strategy (no user confirmation needed)
-- Safe - preserves all project data
+**Privacy-First Design:**
+- Opt-in by default (disabled until user enables)
+- Complete anonymization before sharing
+- User control via /bug-reporting command
+- Local logs in .claude/logs/ (gitignored)
+
+**What Gets Logged:**
+- Protocol execution steps with timestamps
+- Error messages and stack traces (anonymized)
+- Framework version and step information
+
+**What Does NOT Get Logged:**
+- Your code or file contents
+- File paths (replaced with /PROJECT_ROOT/...)
+- API keys, tokens, secrets (removed)
+- Email addresses, IP addresses
 
 ## Next Phase
 
-- [ ] Monitor auto-update in production
-- [ ] Announce v2.2.4 release to users
+- [ ] Monitor bug reports from host projects
+- [ ] Improve anonymization rules based on feedback
+- [ ] Add analytics dashboard for bug patterns
 
 ## npm Commands
 
