@@ -4,8 +4,8 @@
 
 ## Current State
 
-**Version:** 2.3.0
-**Status:** Production - Bug reporting & logging system released
+**Version:** 2.3.1
+**Status:** Production - Complete bug reporting system (Phase 1-3)
 **Branch:** main
 
 ## What's New in v2.0
@@ -147,11 +147,43 @@ claude-code-starter/
 - API keys, tokens, secrets (removed)
 - Email addresses, IP addresses
 
+## What's New in v2.3.1
+
+**Bug Reporting System Complete — Phase 2 & 3 (Phase 7):**
+
+**Phase 2: Centralized Collection**
+- [x] `.claude/scripts/submit-bug-report.sh` - Auto-submit to GitHub Issues
+- [x] `.github/ISSUE_TEMPLATE/bug_report.yml` - Structured issue template
+- [x] CLAUDE.md Step 6.5 enhanced - Two-step confirmation (create → submit)
+- [x] GitHub CLI integration with graceful fallback
+- [x] Issue URL tracking in report metadata
+
+**Phase 3: Analytics & Pattern Detection**
+- [x] `.claude/scripts/analyze-bug-patterns.sh` - Pattern analyzer (bash 3.2 compatible)
+- [x] `/analyze-local-bugs` command - Local bug analysis
+- [x] Framework version distribution analysis
+- [x] Protocol type distribution (Cold Start vs Completion)
+- [x] Top 5 most common errors detection
+- [x] Step failure analysis with recommendations
+- [x] Auto-generated summary reports
+
+**System Architecture:**
+```
+Phase 1: Local Logging → Phase 2: Centralized Collection → Phase 3: Analytics
+   (v2.3.0)                      (v2.3.1)                      (v2.3.1)
+```
+
+**Privacy & Control:**
+- Double confirmation (create report + submit to GitHub)
+- All analysis runs locally first
+- User decides what to share
+- Complete anonymization before submission
+
 ## Next Phase
 
-- [ ] Monitor bug reports from host projects
-- [ ] Improve anonymization rules based on feedback
-- [ ] Add analytics dashboard for bug patterns
+- [ ] Monitor bug report patterns from host projects
+- [ ] ML-based categorization of recurring issues
+- [ ] Auto-fix suggestions for common errors
 
 ## npm Commands
 

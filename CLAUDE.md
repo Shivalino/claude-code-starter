@@ -505,7 +505,26 @@ EOF
         REPORT_FILE=$(bash .claude/scripts/anonymize-report.sh "$COMPLETION_LOG")
         echo "✅ Bug report created: $REPORT_FILE"
         echo ""
-        echo "You can submit this to: github.com/alexeykrol/claude-code-starter/issues"
+
+        # Offer to submit to GitHub automatically
+        read -p "Submit bug report to GitHub? (y/N) " -n 1 -r
+        echo ""
+
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+          # Submit to GitHub Issues
+          if [ -f ".claude/scripts/submit-bug-report.sh" ]; then
+            ISSUE_URL=$(bash .claude/scripts/submit-bug-report.sh "$REPORT_FILE")
+            if [ $? -eq 0 ]; then
+              echo "✅ Submitted to GitHub: $ISSUE_URL"
+            fi
+          else
+            echo "⚠️  Submit script not found"
+            echo "You can submit manually: github.com/alexeykrol/claude-code-starter/issues"
+          fi
+        else
+          echo "ℹ️  Report saved locally: $REPORT_FILE"
+          echo "You can submit later: github.com/alexeykrol/claude-code-starter/issues"
+        fi
       else
         echo "⚠️  Anonymization script not found"
         echo "Manual review needed before sharing: $COMPLETION_LOG"
@@ -729,4 +748,4 @@ fi
    - Use normal Cold Start Protocol
 
 ---
-*Framework: Claude Code Starter v2.3.0 | Updated: 2025-12-16*
+*Framework: Claude Code Starter v2.3.1 | Updated: 2025-12-16*
