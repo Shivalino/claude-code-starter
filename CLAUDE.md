@@ -417,4 +417,4 @@ npm run dialog:list     # List sessions
    - Use normal Cold Start Protocol
 
 ---
-*Framework: Claude Code Starter v2.1.1 | Updated: 2025-12-09*
+*Framework: Claude Code Starter v2.2.4 | Updated: 2025-12-16*

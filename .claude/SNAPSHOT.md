@@ -4,8 +4,8 @@
 
 ## Current State
 
-**Version:** 2.2.4-dev
-**Status:** Development - Adding framework auto-update feature
+**Version:** 2.2.4
+**Status:** Production - Framework auto-update feature released
 **Branch:** main
 
 ## What's New in v2.0
